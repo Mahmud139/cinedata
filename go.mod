@@ -1,4 +1,4 @@
-module github.com/mahmud139/greenlight
+module github.com/mahmud139/cinedata
 
 go 1.22.3
 

@@ -6,6 +6,7 @@ import (
 )
 
 func (app *application) logError(r *http.Request, err error) {
+	fmt.Println(r.URL.String()) //later delete this line
 	app.logger.Println(err)
 }
 

@@ -19,11 +19,11 @@ const version = "1.0.0"
 type config struct {
 	port int
 	env  string
-	db struct {
-		dsn string
+	db   struct {
+		dsn          string
 		maxOpenConns int
 		maxIdleConns int
-		maxIdleTime string
+		maxIdleTime  string
 	}
 }
 
@@ -89,7 +89,7 @@ func openDB(cfg config) (*sql.DB, error) {
 
 	db.SetConnMaxIdleTime(duration)
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5 * time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	err = db.PingContext(ctx)

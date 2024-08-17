@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/julienschmidt/httprouter"
+	"github.com/mahmud139/cinedata/internal/validator"
 )
 
 type envelop map[string]interface{}
@@ -108,4 +109,20 @@ func (app *application) readCSV(qs url.Values, key string, defaultValue []string
 	}
 
 	return strings.Split(csv, ",")
+}
+
+func (app *application) readInt(qs url.Values, key string, defaultValue int, v *validator.Validator) int {
+	s := qs.Get(key)
+	
+	if s == "" {
+		return defaultValue
+	}
+
+	i, err := strconv.Atoi(s)
+	if err != nil || i <= 0 {
+		v.AddError(key, "must be an integer value or greater than zero")
+		return defaultValue
+	}
+
+	return i
 }

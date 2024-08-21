@@ -10,4 +10,5 @@ require (
 	github.com/lib/pq v1.10.9 // indirect
 	golang.org/x/net v0.28.0 // indirect
 	golang.org/x/text v0.17.0 // indirect
+	golang.org/x/time v0.6.0 // indirect
 )

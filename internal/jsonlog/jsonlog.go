@@ -12,8 +12,8 @@ import (
 type Level int8
 
 const (
-	LevelInfo  Level = iota // Has the value 0.
-	LevelError              // Has the value 1.
+	LevelInfo Level = iota // Has the value 0.
+	LevelError            // Has the value 1.
 	LevelFatal              // Has the value 2.
 	LevelOff                // Has the value 3.
 )

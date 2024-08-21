@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"net"
 	"net/http"
+	"sync"
 
 	"golang.org/x/time/rate"
 )
@@ -21,16 +23,32 @@ func (app *application) recoverPanic(next http.Handler) http.Handler {
 }
 
 func (app *application) rateLimit(next http.Handler) http.Handler {
-	// Initialize a new rate limiter which allows an average of 2 requests per second,
-	// with a maximum of 4 requests in a single ‘burst’.
-	limiter := rate.NewLimiter(2, 4)
+	var (
+		mu sync.Mutex
+		client = make(map[string]*rate.Limiter)
+	)
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if !limiter.Allow() {
+		ip, _, err := net.SplitHostPort(r.RemoteAddr)
+		if err != nil {
+			app.serverErrorResponse(w, r, err)
+			return
+		}
+
+		mu.Lock()
+
+		if _, found := client[ip]; !found {
+			client[ip] = rate.NewLimiter(2, 4)
+		}
+
+		if !client[ip].Allow() {
+			mu.Unlock()
 			app.rateLimitExceededResponse(w, r)
 			return
 		}
 
+		mu.Unlock()
+		
 		next.ServeHTTP(w, r)
 	})
 }

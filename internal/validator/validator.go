@@ -1,12 +1,14 @@
 package validator
 
-import "regexp"
+import (
+	"regexp"
 
-// emailverifier "github.com/AfterShip/email-verifier"
+	emailVerifier "github.com/AfterShip/email-verifier"
+)
 
 var	EmailRX = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 
-// var verifier = emailverifier.NewVerifier()
+var verifier = emailVerifier.NewVerifier()
 
 type Validator struct {
 	Errors map[string]string
@@ -56,26 +58,27 @@ func Unique(values []string) bool {
 	return len(values) == len(uniqueValues)
 }
 
-// func (f *Form) VerifyEmail(field string) {
-// 	email := f.Get(field)
-// 	result, err := verifier.Verify(email)
-// 	if err != nil {
-// 		f.Errors.Add(field, "invalid email address.")
-// 	}
+func VerifyEmail(emailAddr string) (bool, string, string) {
+	result, err := verifier.Verify(emailAddr)
+	if err != nil {
+		return false, "email", "invalid email address"
+	}
 
-// 	if !result.Syntax.Valid {
-// 		f.Errors.Add(field, "email address syntext is invalid.")
-// 	}
+	if !result.Syntax.Valid {
+		return false, "email", "email address syntax is invalid"
+	}
 
-// 	if result.Disposable {
-// 		f.Errors.Add(field, "we don't accept disposable email address.")
-// 	}
+	if result.Disposable {
+		return false, "email", "we don't accept disposable email address"
+	}
 
-// 	if !result.HasMxRecords {
-// 		f.Errors.Add(field, "no MX record found for the domain, no such host.")
-// 	}
+	if !result.HasMxRecords {
+		return false, "email", "no MX record found for the domain, no such host"
+	}
 
-// 	if result.RoleAccount {
-// 		f.Errors.Add(field, "we don't accept role-based account.")
-// 	}
-// }
+	if result.RoleAccount {
+		return false, "email", "we don't accept role-based account"
+	}
+
+	return true, "email", "valid email"
+}

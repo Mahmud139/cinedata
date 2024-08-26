@@ -52,6 +52,13 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
+	//waiting for mailtrap configuration
+	// err = app.mailer.Send(user.Email, "user_welcome.tmpl", user)
+	// if err != nil {
+	// 	app.serverErrorResponse(w, r, err)
+	// 	return
+	// }
+
 	err = app.writeJSON(w, http.StatusCreated, envelop{"user": user}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)

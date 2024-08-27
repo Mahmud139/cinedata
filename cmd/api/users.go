@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/mahmud139/cinedata/internal/data"
 	"github.com/mahmud139/cinedata/internal/validator"
@@ -52,13 +53,23 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	//waiting for mailtrap configuration
-	// app.background(func() {
-	// 	err = app.mailer.Send(user.Email, "user_welcome.tmpl", user)
-	// 	if err != nil {
-	// 		app.logger.PrintError(err, nil)
-	// 	}
-	// })
+	token, err := app.models.Tokens.New(user.ID, 3*24*time.Hour, "activation")
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
+	app.background(func() {
+		data := map[string]interface{}{
+			"activationToken": token.Plaintext,
+			"userID": user.ID,
+		}
+
+		err = app.mailer.Send(user.Email, "user_welcome.tmpl", data)
+		if err != nil {
+			app.logger.PrintError(err, nil)
+		}
+	})
 	
 
 	err = app.writeJSON(w, http.StatusAccepted, envelop{"user": user}, nil)

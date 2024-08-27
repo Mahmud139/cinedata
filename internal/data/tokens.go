@@ -32,16 +32,13 @@ func generateToken(userID int64, ttl time.Duration, scope string) (*Token, error
 	}
 
 	randomBytes := make([]byte, 16)
-	fmt.Println(randomBytes, "string:", string(randomBytes))
-
+	
 	_, err := rand.Read(randomBytes)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("after rand.Read string:", string(randomBytes))
 
 	token.Plaintext = base32.StdEncoding.WithPadding(base32.NoPadding).EncodeToString(randomBytes)
-	fmt.Println(token.Plaintext)
 
 	hash := sha256.Sum256([]byte(token.Plaintext))
 	token.Hash = hash[:]

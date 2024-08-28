@@ -6,7 +6,6 @@ import (
 	"crypto/sha256"
 	"database/sql"
 	"encoding/base32"
-	"fmt"
 	"time"
 
 	"github.com/mahmud139/cinedata/internal/validator"
@@ -27,12 +26,12 @@ type Token struct {
 func generateToken(userID int64, ttl time.Duration, scope string) (*Token, error) {
 	token := &Token{
 		UserID: userID,
-		Expiry: time.Now().Add(ttl),
+		Expiry: time.Now().UTC().Add(ttl),
 		Scope: scope,
 	}
 
 	randomBytes := make([]byte, 16)
-	
+
 	_, err := rand.Read(randomBytes)
 	if err != nil {
 		return nil, err
@@ -89,4 +88,8 @@ func (m TokenModel) DeleteAllForUser(scope string, userID int64) error {
 
 	_, err := m.DB.ExecContext(ctx, query, scope, userID)
 	return err
+}
+
+func (m TokenModel) GetAllForUser(scope string, userID int64) (*Token, error) {
+	return nil, nil
 }

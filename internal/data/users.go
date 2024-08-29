@@ -36,6 +36,11 @@ type UserModel struct {
 	DB *sql.DB
 }
 
+func (u *User) IsAnonymous() bool {
+	return u == AnonymousUser
+	// In Go, when you compare two pointers using the == operator, you're comparing the memory addresses they point to, not the content of the objects they point to.
+}
+
 func (p *password) Set(plaintextPassword string) error {
 	hash, err := bcrypt.GenerateFromPassword([]byte(plaintextPassword), 12)
 	if err != nil {

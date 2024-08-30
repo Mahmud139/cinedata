@@ -189,6 +189,7 @@ func (m UserModel) Update(user *User) error {
 	return nil
 }
 
+//retrieve a user for specific token
 func (m UserModel) GetForToken(tokenScope, tokenPlaintext string) (*User, error) {
 	tokenHash := sha256.Sum256([]byte(tokenPlaintext))
 
@@ -228,3 +229,7 @@ func (m UserModel) GetForToken(tokenScope, tokenPlaintext string) (*User, error)
 
 	return &user, nil
 }
+
+// PermissionModel.GetAllForUser(user) → Retrieve all permissions for a user
+// UserModel.GetAllForPermission(permission) → Retrieve all users with a specific permission
+// return all permission codesfor a specific user

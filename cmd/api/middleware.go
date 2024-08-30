@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"net"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 	"time"
 
 	"github.com/mahmud139/cinedata/internal/data"
+	"github.com/mahmud139/cinedata/internal/validator"
 	"golang.org/x/time/rate"
 )
 
@@ -98,6 +100,28 @@ func (app *application) authenticate(next http.Handler) http.Handler {
 			app.invalidAuthorizationTokenResponse(w, r)
 			return
 		}
+
+		token := headerParts[1]
+
+		v := validator.New()
+
+		if data.ValidateTokenPlainText(v, token); !v.Valid() {
+			app.invalidAuthorizationTokenResponse(w, r)
+			return
+		}
+
+		user, err := app.models.Users.GetForToken(data.ScopeAuthentication, token)
+		if err != nil {
+			switch {
+			case errors.Is(err, data.ErrRecordNotFound):
+				app.invalidAuthorizationTokenResponse(w, r)
+			default:
+				app.serverErrorResponse(w, r, err)
+			}
+			return
+		}
+
+		r = app.contextSetUser(r, user)
 
 		next.ServeHTTP(w, r)
 	})

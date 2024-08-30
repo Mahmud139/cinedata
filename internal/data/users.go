@@ -230,6 +230,4 @@ func (m UserModel) GetForToken(tokenScope, tokenPlaintext string) (*User, error)
 	return &user, nil
 }
 
-// PermissionModel.GetAllForUser(user) → Retrieve all permissions for a user
 // UserModel.GetAllForPermission(permission) → Retrieve all users with a specific permission
-// return all permission codesfor a specific user

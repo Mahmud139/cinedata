@@ -63,6 +63,8 @@ func (app *application) invalidCredentialsResponse(w http.ResponseWriter, r *htt
 }
 
 func (app *application) invalidAuthorizationTokenResponse(w http.ResponseWriter, r *http.Request) {
+	/*The WWW-Authenticate header is used in HTTP responses to indicate that the client must authenticate itself to get the requested resource. This header is typically used in responses with a 401 Unauthorized status code, signaling that the client needs to provide valid credentials to access the resource.
+	The "Bearer" value in the WWW-Authenticate header indicates that the server expects the client to use a Bearer token for authentication.*/
 	w.Header().Set("WWW-Authenticate", "Bearer")
 
 	message := "invalid or missing authentication token"

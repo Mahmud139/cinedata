@@ -90,7 +90,3 @@ func (m TokenModel) DeleteAllForUser(scope string, userID int64) error {
 	_, err := m.DB.ExecContext(ctx, query, scope, userID)
 	return err
 }
-
-func (m TokenModel) GetAllForUser(scope string, userID int64) (*Token, error) {
-	return nil, nil
-}

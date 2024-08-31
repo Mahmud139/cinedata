@@ -7,17 +7,18 @@ import (
 )
 
 func main() {
-	// Make the server address configurable at runtime via a command-line flag.
 	addr := flag.String("addr", ":9000", "Server address")
 	flag.Parse()
+
 	log.Printf("starting server on %s", *addr)
-	// Start a HTTP server listening on the given address, which responds to all
-	// requests with the webpage HTML above.
+
 	err := http.ListenAndServe(*addr, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte(html))
+		w.Write([]byte(html))
 	}))
+
 	log.Fatal(err)
 }
+
 
 const html = `
 <!DOCTYPE html>
@@ -26,11 +27,20 @@ const html = `
 <meta charset="UTF-8">
 </head>
 <body>
-<h1>Simple CORS</h1>
+<h1>Preflight CORS</h1>
 <div id="output"></div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-fetch("http://localhost:8080/v1/healthcheck").then(
+fetch("http://localhost:8080/v1/tokens/authentication", {
+method: "POST",
+headers: {
+'Content-Type': 'application/json'
+},
+body: JSON.stringify({
+email: 'grace@example.com',
+password: 'pa55word'
+})
+}).then(
 function (response) {
 response.text().then(function (text) {
 document.getElementById("output").innerHTML = text;

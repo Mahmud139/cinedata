@@ -64,4 +64,3 @@ func (app *application) createAuthenticationTokenHandler(w http.ResponseWriter, 
 		app.serverErrorResponse(w, r, err)
 	}
 }
-// 6GL2424KWQIN5FATJDWTGPC7B4

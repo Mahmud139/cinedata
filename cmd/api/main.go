@@ -70,7 +70,7 @@ func main() {
 	flag.StringVar(&cfg.smtp.password, "smtp-password", os.Getenv("GOOGLE_APP_PASSWORD"), "SMTP password")
 	flag.StringVar(&cfg.smtp.sender, "smtp-sender", "Cinedata <mahmudulhasan139139@gmail.com>", "SMTP sender")
 
-	flag.Func("cors-trusted-origin", "Trusted CORS origins (space separated)", func(val string) error {
+	flag.Func("cors-trusted-origins", "Trusted CORS origins (space separated)", func(val string) error {
 		cfg.cors.trustedOrigins = strings.Fields(val)
 		return nil
 	})

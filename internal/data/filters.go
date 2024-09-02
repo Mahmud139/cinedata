@@ -8,9 +8,9 @@ import (
 )
 
 type Filters struct {
-	Page     int
-	PageSize int
-	Sort     string
+	Page         int
+	PageSize     int
+	Sort         string
 	SortSafeList []string
 }
 
@@ -36,10 +36,10 @@ func CalculateMetadata(totalRecords, page, pageSize int) Metadata {
 	}
 
 	return Metadata{
-		CurrentPage: page,
-		PageSize: pageSize,
-		FirstPage: 1,
-		LastPage: int(math.Ceil(float64(totalRecords) / float64(pageSize))),
+		CurrentPage:  page,
+		PageSize:     pageSize,
+		FirstPage:    1,
+		LastPage:     int(math.Ceil(float64(totalRecords) / float64(pageSize))),
 		TotalRecords: totalRecords,
 	}
 }
@@ -67,5 +67,5 @@ func (f Filters) limit() int {
 }
 
 func (f Filters) offset() int {
-	return (f.Page -1) * f.PageSize
+	return (f.Page - 1) * f.PageSize
 }

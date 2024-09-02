@@ -37,6 +37,6 @@ func (r *Runtime) UnmarshalJSON(jsonValue []byte) error {
 	}
 
 	*r = Runtime(i)
-	
+
 	return nil
 }

@@ -19,7 +19,6 @@ func main() {
 	log.Fatal(err)
 }
 
-
 const html = `
 <!DOCTYPE html>
 <html lang="en">

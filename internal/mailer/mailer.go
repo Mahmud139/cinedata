@@ -60,7 +60,7 @@ func (m Mailer) Send(recipient string, templateFile string, data interface{}) er
 	msg.AddAlternative("text/html", htmlBody.String())
 	fmt.Println("mail sending...")
 
-	for i := 1; i <=3; i++ {
+	for i := 1; i <= 3; i++ {
 		err = m.dialer.DialAndSend(msg)
 		if nil == err {
 			return nil
@@ -68,7 +68,7 @@ func (m Mailer) Send(recipient string, templateFile string, data interface{}) er
 
 		time.Sleep(500 * time.Millisecond)
 	}
-	
+
 	fmt.Println("main send done")
 	return nil
 }

@@ -108,16 +108,16 @@ func (app *application) updateMovieHandler(w http.ResponseWriter, r *http.Reques
 	}
 
 	if input.Title != nil {
-		movie.Title =   *input.Title
+		movie.Title = *input.Title
 	}
 	if input.Year != nil {
-		movie.Year =    *input.Year
+		movie.Year = *input.Year
 	}
 	if input.Runtime != nil {
 		movie.Runtime = *input.Runtime
 	}
 	if input.Genres != nil {
-		movie.Genres =  input.Genres
+		movie.Genres = input.Genres
 	}
 
 	v := validator.New()
@@ -170,7 +170,7 @@ func (app *application) deleteMovieHandler(w http.ResponseWriter, r *http.Reques
 
 func (app *application) listMoviesHandler(w http.ResponseWriter, r *http.Request) {
 	var input struct {
-		Title string
+		Title  string
 		Genres []string
 		data.Filters
 	}

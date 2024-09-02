@@ -135,7 +135,7 @@ func (m UserModel) GetByEmail(email string) (*User, error) {
 
 	err := m.DB.QueryRowContext(ctx, query, email).Scan(
 		&user.ID,
-		&user.CreatedAt, 
+		&user.CreatedAt,
 		&user.Name,
 		&user.Email,
 		&user.Password.hash,
@@ -189,7 +189,7 @@ func (m UserModel) Update(user *User) error {
 	return nil
 }
 
-//retrieve a user for specific token
+// retrieve a user for specific token
 func (m UserModel) GetForToken(tokenScope, tokenPlaintext string) (*User, error) {
 	tokenHash := sha256.Sum256([]byte(tokenPlaintext))
 

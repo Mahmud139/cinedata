@@ -23,8 +23,8 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 	}
 
 	user := &data.User{
-		Name: input.Name,
-		Email: input.Email,
+		Name:      input.Name,
+		Email:     input.Email,
 		Activated: false,
 	}
 
@@ -68,7 +68,7 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 	app.background(func() {
 		data := map[string]interface{}{
 			"activationToken": token.Plaintext,
-			"userID": user.ID,
+			"userID":          user.ID,
 		}
 
 		err = app.mailer.Send(user.Email, "user_welcome.tmpl", data)
@@ -76,7 +76,6 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 			app.logger.PrintError(err, nil)
 		}
 	})
-	
 
 	err = app.writeJSON(w, http.StatusAccepted, envelop{"user": user}, nil)
 	if err != nil {

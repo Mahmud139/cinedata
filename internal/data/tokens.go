@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	ScopeActivation = "activation"
+	ScopeActivation     = "activation"
 	ScopeAuthentication = "authentication"
 )
 
@@ -28,7 +28,7 @@ func generateToken(userID int64, ttl time.Duration, scope string) (*Token, error
 	token := &Token{
 		UserID: userID,
 		Expiry: time.Now().UTC().Add(ttl),
-		Scope: scope,
+		Scope:  scope,
 	}
 
 	randomBytes := make([]byte, 16)

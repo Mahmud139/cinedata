@@ -58,7 +58,7 @@ func (m MovieModel) Insert(movie *Movie) error {
 
 func (m MovieModel) Get(id int64) (*Movie, error) {
 	if id < 1 {
-		return nil , ErrRecordNotFound
+		return nil, ErrRecordNotFound
 	}
 
 	query := `
@@ -86,7 +86,7 @@ func (m MovieModel) Get(id int64) (*Movie, error) {
 		case errors.Is(err, sql.ErrNoRows):
 			return nil, ErrRecordNotFound
 		default:
-			return nil , err
+			return nil, err
 		}
 	}
 
@@ -154,7 +154,7 @@ func (m MovieModel) Delete(id int64) error {
 	return nil
 }
 
-func (m MovieModel) GetAll(title string, genres []string, filters Filters) ([]*Movie, Metadata,error) {
+func (m MovieModel) GetAll(title string, genres []string, filters Filters) ([]*Movie, Metadata, error) {
 	query := fmt.Sprintf(`
 	SELECT count(*) OVER(), id, created_at, title, year, runtime, genres, version
 	FROM movies
@@ -162,7 +162,6 @@ func (m MovieModel) GetAll(title string, genres []string, filters Filters) ([]*M
 	AND (genres @> $2 OR $2 = '{}')
 	ORDER BY %s %s, id ASC
 	LIMIT $3 OFFSET $4`, filters.sortColum(), filters.sortDirection())
-	
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()

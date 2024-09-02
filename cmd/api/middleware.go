@@ -33,12 +33,12 @@ func (app *application) recoverPanic(next http.Handler) http.Handler {
 
 func (app *application) rateLimit(next http.Handler) http.Handler {
 	type client struct {
-		limiter *rate.Limiter
+		limiter  *rate.Limiter
 		lastSeen time.Time
 	}
 
 	var (
-		mu sync.Mutex
+		mu      sync.Mutex
 		clients = make(map[string]*client)
 	)
 
@@ -80,7 +80,6 @@ func (app *application) rateLimit(next http.Handler) http.Handler {
 
 			mu.Unlock()
 		}
-		
 
 		next.ServeHTTP(w, r)
 	})
@@ -139,7 +138,7 @@ func (app *application) requireActivatedUser(next http.HandlerFunc) http.Handler
 			app.inactiveAccountResponse(w, r)
 			return
 		}
-		
+
 		next.ServeHTTP(w, r)
 	})
 
@@ -160,7 +159,7 @@ func (app *application) requireAuthenticatedUser(next http.HandlerFunc) http.Han
 }
 
 func (app *application) requirePermission(code string, next http.HandlerFunc) http.HandlerFunc {
-	fn := func (w http.ResponseWriter, r *http.Request)  {
+	fn := func(w http.ResponseWriter, r *http.Request) {
 		user := app.contextGetUser(r)
 
 		permissions, err := app.models.Permissions.GetAllForUser(user.ID)

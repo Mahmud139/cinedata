@@ -6,12 +6,15 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/mahmud139/cinedata/internal/data"
 	"github.com/mahmud139/cinedata/internal/validator"
+
+	"github.com/felixge/httpsnoop"
 	"golang.org/x/time/rate"
 )
 
@@ -211,19 +214,19 @@ func (app *application) metrics(next http.Handler) http.Handler {
 	totalRequestsReceived := expvar.NewInt("total_request_received")
 	totalResponsesSent := expvar.NewInt("total_responses_sent")
 	totalProcessingTimeMicrosends := expvar.NewInt("total_processing_time_μs")
+	totalResponsesSentByStatus := expvar.NewMap("total_responses_sent_by_status")
 
 	//this code will run for every request...
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		start := time.Now()
-
 		totalRequestsReceived.Add(1)
 
-		next.ServeHTTP(w, r)
+		metrics := httpsnoop.CaptureMetrics(next, w, r)
 
 		//these will execute On the way back up the middleware chain
 		totalResponsesSent.Add(1)
 
-		duration := time.Since(start).Microseconds()
-		totalProcessingTimeMicrosends.Add(duration)
+		totalProcessingTimeMicrosends.Add(int64(metrics.Duration.Microseconds()))
+
+		totalResponsesSentByStatus.Add(strconv.Itoa(metrics.Code), 1)
 	})
 }

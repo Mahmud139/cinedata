@@ -2,6 +2,8 @@ github.com/AfterShip/email-verifier v1.4.0 h1:DoQplvVFVhZUfS5fPiVnmCQDr5i1tv+ivU
 github.com/AfterShip/email-verifier v1.4.0/go.mod h1:JNPV1KZpTq4TArmss1NAOJsTD8JRa/ZElbCAJCEgikg=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/felixge/httpsnoop v1.0.4 h1:NFTV2Zj1bL4mc9sqWACXbQFVBBg2W3GPvqp8/ESS2Wg=
+github.com/felixge/httpsnoop v1.0.4/go.mod h1:m8KPJKqk1gH5J9DgRY2ASl2lWCfGKXixSwevea8zH2U=
 github.com/go-mail/mail/v2 v2.3.0 h1:wha99yf2v3cpUzD1V9ujP404Jbw2uEvs+rBJybkdYcw=
 github.com/go-mail/mail/v2 v2.3.0/go.mod h1:oE2UK8qebZAjjV1ZYUpY7FPnbi/kIU53l1dmqPRb4go=
 github.com/h2non/parth v0.0.0-20190131123155-b4df798d6542/go.mod h1:Ow0tF8D4Kplbc8s8sSb3V2oUCygFHVp8gC3Dn6U4MNI=

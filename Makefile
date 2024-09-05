@@ -80,3 +80,20 @@ build/api:
 	@echo 'Building cmd/api...'
 	go build -ldflags=${linker_flags} -o=./bin/api ./cmd/api
 	GOOS=linux GOARCH=amd64 go build -ldflags=${linker_flags} -o=./bin/linux_amd64/api ./cmd/api
+
+# ==================================================================================== #
+# PRODUCTION
+# ==================================================================================== #
+
+production_host_ip = "134.209.105.186"
+
+## production/connect: connect to the production server
+.PHONY: production/connect
+production/connect:
+	ssh -i "~/.ssh/id_rsa_cinedata" cinedata@${production_host_ip}
+
+## production/deploy/api: deploy the api to production
+.PHONY: production/deploy/api
+production/deploy/api:
+	rsync -rP --delete -e "ssh -i $HOME/.ssh/id_rsa_cinedata" ./bin/linux_amd64/api ./migrations cinedata@${production_host_ip}:~
+	ssh -t -i "~/.ssh/id_rsa_cinedata" cinedata@${production_host_ip} 'migrate -path ~/migrations -database $$CINEDATA_DB_DSN up'

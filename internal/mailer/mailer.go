@@ -3,7 +3,6 @@ package mailer
 import (
 	"bytes"
 	"embed"
-	"fmt"
 	"html/template"
 	"time"
 
@@ -58,7 +57,6 @@ func (m Mailer) Send(recipient string, templateFile string, data interface{}) er
 	msg.SetHeader("Subject", subject.String())
 	msg.SetBody("text/plain", plainBody.String())
 	msg.AddAlternative("text/html", htmlBody.String())
-	fmt.Println("mail sending...")
 
 	for i := 1; i <= 3; i++ {
 		err = m.dialer.DialAndSend(msg)
@@ -69,6 +67,5 @@ func (m Mailer) Send(recipient string, templateFile string, data interface{}) er
 		time.Sleep(500 * time.Millisecond)
 	}
 
-	fmt.Println("main send done")
 	return nil
 }

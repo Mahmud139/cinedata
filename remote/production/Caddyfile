@@ -1,0 +1,9 @@
+http://134.209.105.186 {
+	respond /debug/* "Not Permitted" 403
+	reverse_proxy localhost:4000
+}
+
+cinedata.mahmud.pro {
+	respond /debug/* "Not Permitted" 403
+	reverse_proxy localhost:4000
+}

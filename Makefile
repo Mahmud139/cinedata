@@ -97,3 +97,22 @@ production/connect:
 production/deploy/api:
 	rsync -rP --delete -e "ssh -i $HOME/.ssh/id_rsa_cinedata" ./bin/linux_amd64/api ./migrations cinedata@${production_host_ip}:~
 	ssh -t -i "~/.ssh/id_rsa_cinedata" cinedata@${production_host_ip} 'migrate -path ~/migrations -database $$CINEDATA_DB_DSN up'
+
+## production/configure/api.service
+.PHONY: production/configure/api.service
+production/configure/api.service:
+	rsync -P -e "ssh -i $HOME/.ssh/id_rsa_cinedata" $HOME/remote/production/api.service cinedata@${production_host_ip}:~
+	ssh -t -i "~/.ssh/id_rsa_cinedata" cinedata@${production_host_ip} '\
+	sudo mv ~/api.service /etc/systemd/system/ \
+	&& sudo systemctl enable api \
+	&& sudo systemctl restart api \
+	'
+
+## production/configure/caddyfile: configure the production Caddyfile
+.PHONY: production/configure/caddyfile
+production/configure/caddyfile:
+	rsync -P ./remote/production/Caddyfile cinedata@${production_host_ip}:~
+	ssh -t cinedata@${production_host_ip} '\
+	sudo mv ~/Caddyfile /etc/caddy/ \
+	&& sudo systemctl reload caddy \
+	'

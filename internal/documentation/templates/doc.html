@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Cinedata API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+		a {
+			text-decoration: none;
+		}
+        .container {
+            margin: 20px auto;
+            width: 80%;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #79a479;
+            color: white;
+        }
+        td {
+            background-color: #f9f9f9;
+        }
+        .endpoint {
+            font-weight: bold;
+            color: #333;
+        }
+        .description {
+            margin-top: 20px;
+            color: #555;
+        }
+        .code-block {
+            background-color: #f2f2f2;
+            padding: 10px;
+            font-family: monospace;
+            color: #333;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Cinedata API Documentation</h1>
+    <p>Version 1.0 | A JSON API for retrieving and managing information about movies</p>
+</header>
+
+<div class="container">
+    <h1>Endpoints Overview</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>URL Pattern</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>GET</td>
+                <td class="endpoint"><a href="#healthcheck">/v1/healthcheck</a></td>
+                <td>Show application information</td>
+            </tr>
+			<tr>
+                <td>POST</td>
+                <td class="endpoint">/v1/users</td>
+                <td>Register a new user</td>
+            </tr>
+			<tr>
+				<td>PUT</td>
+                <td class="endpoint">/v1/users/activated</td>
+                <td>Activate a specific user</td>
+			</tr>
+			<tr>
+				<td>POST</td>
+                <td class="endpoint">/v1/tokens/password-reset</td>
+                <td>Generate a new password-reset token</td>
+			</tr>
+			<tr>
+				<td>PUT</td>
+                <td class="endpoint">/v1/users/password</td>
+                <td>Update the password for a specific user</td>
+			</tr>
+			<tr>
+				<td>POST</td>
+                <td class="endpoint">/v1/tokens/authentication</td>
+                <td>Generate a new authentication token</td>
+			</tr>
+            <tr>
+                <td>GET</td>
+                <td class="endpoint">/v1/movies</td>
+                <td>Show the details of all movies</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td class="endpoint">/v1/movies</td>
+                <td>Create a new movie</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td class="endpoint">/v1/movies/:id</td>
+                <td>Show the details of a specific movie</td>
+            </tr>
+            <tr>
+                <td>PATCH</td>
+                <td class="endpoint">/v1/movies/:id</td>
+                <td>Update the details of a specific movie</td>
+            </tr>
+            <tr>
+                <td>DELETE</td>
+                <td class="endpoint">/v1/movies/:id</td>
+                <td>Delete a specific movie</td>
+            </tr>
+        </tbody>
+    </table><br>
+
+    <h1>Endpoint Details</h1>
+	<!-- Done /v1/healthcheck -->
+    <div class="description">
+        <h2><a href="#healthcheck">GET /v1/healthcheck</a></h2>
+        <p>This endpoint will return some basic information about our API, including its current version number and operating environment.</p>
+
+		<p><strong>Example Request:</strong></p>
+		<div class="code-block"><p>curl cinedata.mahmud.pro/v1/healthcheck</p></div>
+
+		<p><b>Successful Response:</b></p>
+        <div class="code-block">
+			<pre>
+				{
+					"status": "available",
+					"system_info": {
+						"environment": "production",
+						"version": "v1.0.0-8-ge863d51"
+					}
+				}
+			</pre>
+		</div>
+    </div><br>
+
+	<!-- Done /v1/users -->
+	<div class="description">
+        <h2>POST /v1/users</h3>
+        <p>This endpoint will register (or signing up) a new user. This endpoint will expect user to provide the following details for the new user in a JSON request body.</p>
+
+		<p><b>Accepted JSON key-value pair in request BODY: </b></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Key</th>
+					<th>Value Type</th>
+					<th>Example</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>name</td>
+					<td>string</td>
+					<td>{"name":"alice"}</td>
+				</tr>
+				<tr>
+					<td>email</td>
+					<td>string</td>
+					<td>{"email":"youremail@example.com"}</td>
+				</tr>
+				<tr>
+					<td>password</td>
+					<td>string</td>
+					<td>{"password":"12134221"}</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p><strong>Example Request:</strong></p>
+		<div class="code-block"><p>curl -X PUT -d '{"name": "alice", "email":"youremail@gmail.com", "password":"122345623"}' cinedata.mahmud.pro/v1/users/activated</p></div>
+
+		<p><strong>Successful Response:</strong></p>
+        <div class="code-block">
+			<pre>
+				{
+					"user": {
+						"id": 1,
+						"created_at": "2024-09-10T05:29:17-04:00",
+						"name": "your_name",
+						"email": "youremail@example.com",
+						"activated": false
+					}
+				}
+			</pre>
+		</div>
+    </div><br>
+
+	<!-- Done /v1/users/activated -->
+	<div class="description">
+        <h2>PUT /v1/users/activated</h2>
+        <p>This endpoint will accept a JSON request body containing the plaintext activation token which they received in their email after registering a new user.</p>
+
+		<p><b>Accepted JSON key-value pair in request BODY: </b></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Key</th>
+					<th>Value Type</th>
+					<th>Example</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>token</td>
+					<td>string</td>
+					<td>{"token":"Y7QCRZ7FWOWYLXLAOC2VYOLIPY"}</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p><strong>Example Request:</strong></p>
+		<div class="code-block"><p>curl -X PUT -d '{"token": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}' cinedata.mahmud.pro/v1/users/activated</p></div>
+
+		<p><strong>Successful Response:</strong></p>
+        <div class="code-block">
+			<pre>
+				{
+					"user": {
+						"id": 1,
+						"created_at": "2024-09-10T05:29:17-04:00",
+						"name": "your_name",
+						"email": "youremail@example.com",
+						"activated": true
+					}
+				}
+			</pre>
+		</div>
+    </div><br>
+
+	<!-- Done /v1/tokens/password-reset -->
+	<div class="description">
+        <h2>POST /v1/tokens/password-reset</h2>
+        <p>This endpoint will accept a JSON request body containing the email address of the user whose password they want to reset. If the user with that email address exists in the database, and the user has already confirmed their email address by activating, then the user will receive an email containing a token.</p>
+
+		<p><b>Accepted JSON key-value pair in request BODY: </b></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Key</th>
+					<th>Value Type</th>
+					<th>Example</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>email</td>
+					<td>string</td>
+					<td>{"email": "alice@example.com"}</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p><strong>Example Request:</strong></p>
+		<div class="code-block"><p>curl -X POST -d '{"email": "alice@example.com"}' cinedata.mahmud.pro/v1/tokens/password-reset</p></div>
+
+		<p><strong>Successful Response:</strong></p>
+        <div class="code-block">
+			<pre>
+				{	
+					"message": "an email will be sent to you containing password reset instructions"
+				}
+			</pre>
+		</div>
+    </div><br>
+
+	<!-- Done /v1/users/password -->
+	<div class="description">
+        <h2>PUT /v1/users/password</h2>
+        <p>This endpoint will accept a JSON request body containing new password and token then successful response will update the password for the specific user.</p>
+
+		<p><b>Accepted JSON key-value pair in request BODY: </b></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Key</th>
+					<th>Value Type</th>
+					<th>Example</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>password</td>
+					<td>string</td>
+					<td>{"password":"12345678"}</td>
+				</tr>
+				<tr>
+					<td>token</td>
+					<td>string</td>
+					<td>{"token":"Y7QCRZ7FWOWYLXLAOC2VYOLIPY"}</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<p><strong>Example Request:</strong></p>
+		<div class="code-block"><p>curl -X PUT -d '{"password": "your_new_password", "token": "Y7QCRZ7FWOWYLXLAOC2VYOLIPY"}' cinedata.mahmud.pro/v1/users/password</p></div>
+
+		<p><strong>Successful Response:</strong></p>
+        <div class="code-block">
+			<pre>
+				{
+					"message": "your password was successfully reset"
+				}
+			</pre>
+		</div>
+    </div><br>
+
+	<!-- Done /v1/tokens/authentication -->
+	<div class="description">
+        <h2>POST /v1/tokens/authentication</h2>
+        <p>This endpoint will accept a JSON request body containing the user's credentials (email and password) and will return a authentication token with expiry time.</p>
+
+		<p><b>Accepted JSON key-value pair in request BODY: </b></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Key</th>
+					<th>Value Type</th>
+					<th>Example</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>email</td>
+					<td>string</td>
+					<td>{"email":"youremail@example.com"}</td>
+				</tr>
+				<tr>
+					<td>password</td>
+					<td>string</td>
+					<td>{"password":"12345678"}</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<p><strong>Example Request:</strong></p>
+		<div class="code-block"><p>curl -X PUT -d '{"email":"youremail@example.com", "password":"12345678"}' cinedata.mahmud.pro/v1/tokens/authentication</p></div>
+
+		<p><strong>Successful Response:</strong></p>
+        <div class="code-block">
+			<pre>
+			{
+				"authentication_token": {
+					"token": "XP5CCPHIIAVON3XBAT6RM3IP5Y",
+					"expiry": "2024-09-11T09:51:51.379151Z"
+				}
+			}
+			</pre>
+		</div>
+    </div><br>
+
+	<!-- Done /v1/movies -->
+    <div class="description">
+        <h2>GET /v1/movies</h2>
+        <p>This endpoint will return a list of all movies in the database. This endpoint support filtering by specifying parameters.</p>
+		<p><b>Accepted Headers: </b></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Key</th>
+					<th>Value</th>
+					<th>Example Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Authorization</td>
+					<td>Bearer your_authentication_token</td>
+					<td>Bearer XP5CCPHIIAVON3XBAT6RM3IP5Y</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p><b>Accepted Parameters: </b></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Parameter</th>
+					<th>Type</th>
+					<th>Example Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>title</td>
+					<td>string</td>
+					<td>The Matrix</td>
+				</tr>
+				<tr>
+					<td>genres</td>
+					<td>[]string</td>
+					<td>crime,drama (values must be comma separated with no whitespace)</td>
+				</tr>
+				<tr>
+					<td>page</td>
+					<td>uint (positive integer)</td>
+					<td>any value between 1 to 1000000</td>
+				</tr>
+				<tr>
+					<td>page_size</td>
+					<td>uint (positive integer)</td>
+					<td>any value between 1 to 100</td>
+				</tr>
+				<tr>
+					<td>sort</td>
+					<td>string</td>
+					<td>support sorting by "id", "title", "year", "runtime", "-id", "-title","-year", "-runtime". appending hyphen before value means sorting in descending order.</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p><strong>Example Request:</strong></p>
+		<div class="code-block"><p>curl cinedata.mahmud.pro/v1/movies?title=black&genres=action,drama&page=1&page_size=5&sort=year</p></div>
+
+		<p><strong>Successful Response:</strong></p>
+        <div class="code-block">
+			<pre>
+				{
+					"metadata": {
+						"current_page": 1,
+						"page_size": 5,
+						"first_page": 1,
+						"last_page": 1,
+						"total_records": 1
+					},
+					"movies": [
+						{
+							"id": 2,
+							"title": "Black Panther",
+							"year": 2018,
+							"runtime": "134 mins",
+							"genres": [
+								"sci-fi",
+								"action",
+								"adventure"
+							],
+							"version": 2
+						}
+					]
+				}
+			</pre>
+        </div>
+    </div><br>
+
+	<!-- Done create /v1/movies -->
+    <div class="description">
+        <h2>POST /v1/movies</h2>
+        <p>This endpoint will accept a JSON request body containing data for the movie the user want to create in the system.</p>
+
+		<p><b>Accepted Headers: </b></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Key</th>
+					<th>Value</th>
+					<th>Example Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Authorization</td>
+					<td>Bearer your_authentication_token</td>
+					<td>Bearer XP5CCPHIIAVON3XBAT6RM3IP5Y</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p><b>Accepted JSON key-value pair in request BODY: </b></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Key</th>
+					<th>Value Type</th>
+					<th>Example</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>title</td>
+					<td>string</td>
+					<td>{"title":"Black Panther"}</td>
+				</tr>
+				<tr>
+					<td>year</td>
+					<td>uint (positive integer)</td>
+					<td>{"year":2018}</td>
+				</tr>
+				<tr>
+					<td>runtime</td>
+					<td>string</td>
+					<td>{"runtime":"134 mins"}</td>
+				</tr>
+				<tr>
+					<td>genres</td>
+					<td>[]string</td>
+					<td>{"runtime":["sci-fi","action","adventure"]}</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p><strong>Example Request:</strong></p>
+		<div class="code-block"><p>curl -X POST -d '{"title":"Moana","year":2016,"runtime":107, "genres":["animation","adventure"]}' cinedata.mahmud.pro/v1/movies</p></div>
+
+		<p><strong>Successful Response:</strong></p>
+        <div class="code-block">
+			<pre>
+				{
+					"movie": {
+						"id": 12,
+						"title": "Moana",
+						"year": 2016,
+						"runtime": "107 mins",
+						"genres": [
+							"adventure",
+							"animation"
+						],
+						"version": 1
+					}
+				}
+			</pre>
+        </div>
+    </div><br>
+
+	<!-- done get /v1/movies/123 -->
+    <div class="description">
+        <h2>GET /v1/movies/:id</h2>
+        <p>Requesting this endpoint user can retrieve details of a specific movie by its ID.</p>
+		
+		<p><b>Accepted Headers: </b></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Key</th>
+					<th>Value</th>
+					<th>Example Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Authorization</td>
+					<td>Bearer your_authentication_token</td>
+					<td>Bearer XP5CCPHIIAVON3XBAT6RM3IP5Y</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p><b>Accepted Parameters: </b></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Parameter</th>
+					<th>Type</th>
+					<th>Example Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>:id</td>
+					<td>uint (positive integer)</td>
+					<td>1,2,56,2121,45</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p><strong>Example Request:</strong></p>
+		<div class="code-block"><p>curl cinedata.mahmud.pro/v1/movies/123</p></div>
+
+		<p><b>Successful Response: </b></p>
+        <div class="code-block">
+            <pre>
+				{
+					"movie": {
+						"id": 123,
+						"title": "Black Panther",
+						"year": 2018,
+						"runtime": "134 mins",
+						"genres": [
+							"sci-fi",
+							"action",
+							"adventure"
+						],
+						"version": 1
+					}
+				}
+			</pre>
+        </div>
+    </div><br>
+
+	<!-- Done update -->
+    <div class="description">
+        <h2>PATCH /v1/movies/:id</h2>
+        <p>Requesting this endpoint with JSON body user can update the details of a specific movie by its ID.</p>
+
+		<p><b>Accepted Headers: </b></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Key</th>
+					<th>Value</th>
+					<th>Example Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Authorization</td>
+					<td>Bearer your_authentication_token</td>
+					<td>Bearer XP5CCPHIIAVON3XBAT6RM3IP5Y</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p><b>Accepted Parameters: </b></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Parameter</th>
+					<th>Type</th>
+					<th>Example Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>:id</td>
+					<td>uint (positive integer)</td>
+					<td>1,2,56,2121,45</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p><b>Accepted JSON key-value pair in request BODY: </b></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Key</th>
+					<th>Value Type</th>
+					<th>Example</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>title</td>
+					<td>string</td>
+					<td>{"title":"Black Panther"}</td>
+				</tr>
+				<tr>
+					<td>year</td>
+					<td>uint (positive integer)</td>
+					<td>{"year":2018}</td>
+				</tr>
+				<tr>
+					<td>runtime</td>
+					<td>string</td>
+					<td>{"runtime":"134 mins"}</td>
+				</tr>
+				<tr>
+					<td>genres</td>
+					<td>[]string</td>
+					<td>{"runtime":["sci-fi","action","adventure"]}</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p><strong>Example Request:</strong></p>
+		<div class="code-block"><p>curl -X PATCH -d '{"year":2019}' cinedata.mahmud.pro/v1/movies/2</p></div>
+
+		<p><strong>Successful Response:</strong></p>
+        <div class="code-block">
+            <pre>
+				{
+					"movie": {
+						"id": 123,
+						"title": "Black Panther",
+						"year": 2019,
+						"runtime": "134 mins",
+						"genres": [
+							"sci-fi",
+							"action",
+							"adventure"
+						],
+						"version": 2
+					}
+				}
+			</pre>
+        </div>
+    </div><br>
+
+	<!-- Done delete -->
+    <div class="description">
+        <h2>DELETE /v1/movies/:id</h2>
+        <p>Delete a specific movie from the database by its ID.</p>
+
+		<p><b>Accepted Headers: </b></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Key</th>
+					<th>Value</th>
+					<th>Example Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Authorization</td>
+					<td>Bearer your_authentication_token</td>
+					<td>Bearer XP5CCPHIIAVON3XBAT6RM3IP5Y</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<p><b>Accepted Parameters: </b></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Parameter</th>
+					<th>Type</th>
+					<th>Example Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>:id</td>
+					<td>uint (positive integer)</td>
+					<td>1,2,56,2121,45</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p><strong>Example Request:</strong></p>
+		<div class="code-block"><p> curl -X DELETE cinedata.mahmud.pro/v1/movies/3</p></div>
+
+		<p><strong>Successful Response:</strong></p>
+        <div class="code-block">
+			<pre>
+				{
+					"message": "movie successfully deleted"
+				}
+			</pre>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2024 Cinedata API - All Rights Reserved</p>
+</footer>
+
+</body>
+</html>

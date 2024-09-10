@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/mahmud139/cinedata/internal/data"
+	"github.com/mahmud139/cinedata/internal/doc"
 	"github.com/mahmud139/cinedata/internal/validator"
 )
 
@@ -198,6 +199,19 @@ func (app *application) updateUserPasswordHandler(w http.ResponseWriter, r *http
 	env := envelop{"message": "your password was successfully reset"}
 
 	err = app.writeJSON(w, http.StatusOK, env, nil)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+	}
+}
+
+func (app *application) apiDocumentation(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := doc.Documentation()
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
+	err = tmpl.Execute(w, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}

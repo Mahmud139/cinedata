@@ -13,8 +13,8 @@ import (
 	"github.com/mahmud139/cinedata/internal/data"
 	"github.com/mahmud139/cinedata/internal/validator"
 
-	"github.com/tomasen/realip"
 	"github.com/felixge/httpsnoop"
+	"github.com/tomasen/realip"
 	"golang.org/x/time/rate"
 )
 

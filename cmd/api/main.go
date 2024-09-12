@@ -70,11 +70,11 @@ func main() {
 	flag.Float64Var(&cfg.limiter.rps, "limiter-rps", 2, "Rate limiter maximum request per second")
 	flag.IntVar(&cfg.limiter.burst, "limiter-burst", 4, "Rate limiter maximum burst")
 	flag.BoolVar(&cfg.limiter.enabled, "limiter-enabled", true, "Enable rate limiter")
-	flag.StringVar(&cfg.smtp.host, "smtp-host", "smtp.gmail.com", "SMTP host")
-	flag.IntVar(&cfg.smtp.port, "smtp-port", 587, "SMTP port")
-	flag.StringVar(&cfg.smtp.username, "smtp-username", "mahmudulhasan139139@gmail.com", "SMTP username")
-	flag.StringVar(&cfg.smtp.password, "smtp-password", os.Getenv("GOOGLE_APP_PASSWORD"), "SMTP password")
-	flag.StringVar(&cfg.smtp.sender, "smtp-sender", "Cinedata <mahmudulhasan139139@gmail.com>", "SMTP sender")
+	flag.StringVar(&cfg.smtp.host, "smtp-host", "", "SMTP host")
+	flag.IntVar(&cfg.smtp.port, "smtp-port", 0, "SMTP port")
+	flag.StringVar(&cfg.smtp.username, "smtp-username", "", "SMTP username")
+	flag.StringVar(&cfg.smtp.password, "smtp-password", "", "SMTP password")
+	flag.StringVar(&cfg.smtp.sender, "smtp-sender", "", "SMTP sender")
 
 	flag.Func("cors-trusted-origins", "Trusted CORS origins (space separated)", func(val string) error {
 		cfg.cors.trustedOrigins = strings.Fields(val)

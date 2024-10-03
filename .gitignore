@@ -1,4 +1,4 @@
 .envrc
 bin/
 remote/
-.Makefile
+Makefile
